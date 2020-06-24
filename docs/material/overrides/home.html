@@ -58,13 +58,8 @@
     }
 
     .tx-container {
-        height: 200px;
-        width: 436px;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        margin-top: -100px;
-        margin-left: -218px;
+        margin: 140px auto;
+        max-width: 980px;
     }
 
     /* Set inverted text color on hero */
@@ -76,25 +71,34 @@
     .tx-hero h1 {
         margin-bottom: 2rem;
         color: currentColor;
-        font-weight: 900;
-        font-size: 4rem;
+        font-weight: 600;
+        font-size: 64px;
+        max-width: 600px;
     }
 
-    .tx-hero__content {
-        text-align: center;
+    .tx-hero__content p {
+        font-size: 28px;
+        max-width: 600px;
     }
 
     /* Adjust spacing of buttons and invert them */
     .tx-hero .md-button {
+        font-size: 24px;
         margin-top: .5rem;
+        background: transparent;
+        color: white;
+        text-decoration: underline;
         margin-right: .5rem;
-        color: var(--md-primary-bg-color);
+        /*color: var(--md-primary-bg-color);*/
     }
 
     /* Invert primary button */
     .tx-hero .md-button--primary {
-        color: rgb(254, 55, 55);
-        border-color: var(--md-primary-bg-color);
+        color: #0151CC;
+        border: 0;
+        background: white;
+        border-radius: 7px;
+        text-decoration: none;
     }
 
     .md-typeset .md-button--primary {
@@ -188,8 +192,8 @@
         <div class="tx-hero">
             <!-- Hero content -->
             <div class="tx-hero__content">
-                <h1>xquanto</h1>
-                <p>{{ config.site_description }}. Set up once and forever.</p>
+                <h1>Powerful Highload Architecture</h1>
+                <p>Horizontal microservices architecture for high volume orders processing.</p>
                 <a
                         href="{{ page.next_page.url | url }}"
                         title="{{ page.next_page.title | striptags }}"
