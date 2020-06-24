@@ -1,12 +1,12 @@
-site_name: Centrifugo
-site_description: Centrifugo is a scalable real-time messaging server in language-agnostic way
-site_author: Centrifugal organization
-site_url: https://centrifugal.github.io/centrifugo/
+site_name: xquanto
+site_description: Horizontal microservices architecture for high volume orders processing
+site_author: xquanto organization
+site_url: https://xquanto.github.io/docs/
 dev_addr: 0.0.0.0:8000
 docs_dir: docs/content
 edit_uri: https://github.com/centrifugal/documentation/edit/master/docs/
-repo_name: 'centrifugal/centrifugo'
-repo_url: 'https://github.com/centrifugal/centrifugo'
+repo_name: 'xquanto/xquanto'
+repo_url: 'https://github.com/xquanto/docs'
 
 copyright: Copyright &copy; 2020 Centrifugal
 
@@ -50,8 +50,8 @@ theme:
   custom_dir: docs/material
   language: en
   include_sidebar: true
-  favicon: docs/images/favicon.png
-  logo: docs/images/logo.png
+  favicon: images/favicon.png
+  logo: images/logo.png
   palette:
     primary: 'black'
     accent: 'cyan'
