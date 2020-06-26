@@ -39,12 +39,25 @@
     body {
         background: black url("images/xquanto-circles-bg.jpg") no-repeat center;
         background-size: cover;
-        font-family: "TT Commons";
+        font-family: "TT Commons", -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", Roboto, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", Raleway, helvetica neue, helvetica, arial, tahoma, sans-serif;;
+    }
+
+    .tx-wrapper {
+        position: relative;
+        z-index: 5;
     }
 
     /* Application header should be static for the landing page */
     .md-header {
         position: initial;
+    }
+
+    .md-overlay {
+        z-index: 10;
+    }
+
+    .md-main {
+        z-index: 15;
     }
 
     /* Remove spacing, as we cannot hide it completely */
@@ -59,10 +72,13 @@
 
     .md-header {
         position: fixed;
+        z-index: 10;
     }
 
     .md-header-nav__title {
         padding-left: 0;
+        font-size: 1rem;
+        font-weight: 500;
     }
 
 
@@ -70,6 +86,7 @@
         background: transparent !important;
         position: fixed;
         top: 48px;
+        z-index: 10;
     }
 
     .md-tabs__link {
@@ -77,8 +94,8 @@
     }
 
     .tx-container {
-        margin: 200px auto 120px;
-        max-width: 1024px;
+        margin: 30vh auto 10vh;
+        max-width: 960px;
         width: 100%;
     }
 
@@ -106,14 +123,15 @@
     /* Adjust spacing of buttons and invert them */
     .tx-hero .md-button {
         font-size: 24px;
+        padding: 10px 50px 8px;
         margin-top: .5rem;
+        margin-right: 2px;
         background: transparent;
         font-weight: 500;
         color: white;
         border: 0;
         border-radius: 7px;
         text-decoration: underline;
-        margin-right: .5rem;
         /*color: var(--md-primary-bg-color);*/
     }
 
@@ -137,6 +155,180 @@
     .tx-hero .md-button.md-button--primary:focus {
         color: #0151CC;
         background-color: rgba(255,255,255,.9);
+    }
+
+    /* VF Animation */
+
+    .animation-2 {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 2;
+        background: #012B71;
+        line-height: 0;
+        perspective: 1px;
+        --base-size: 80vh;
+    }
+
+    .animation-2 div {
+        position: absolute;
+        top: 13vh;
+        left: 45vw;
+        width: var(--base-size);
+        padding-bottom: var(--base-size);
+        line-height: 0;
+        border-radius: 50%;
+        mix-blend-mode: lighten;
+        transform-origin: center;
+        animation: animation-2--rotate 8s infinite;
+    }
+    .animation-2 div:nth-child(2) {
+        margin-left: calc(var(--base-size) * .707);
+        margin-top: calc(var(--base-size) * -.707);
+        animation: animation-2--rotate-inverse 8s infinite;
+    }
+    .animation-2 div:nth-child(3) {
+        margin-left: calc(var(--base-size) * -.707);
+        margin-top: calc(var(--base-size) * -.707);
+        animation: animation-2--rotate-special 8s infinite;
+    }
+    .animation-2 div:nth-child(4) {
+        margin-left: calc(var(--base-size) * -.707);
+        margin-top: calc(var(--base-size) * .707);
+        animation: animation-2--rotate-inverse 8s infinite;
+    }
+    .animation-2 div:nth-child(5) {
+        margin-left: calc(var(--base-size) * .707);
+        margin-top: calc(var(--base-size) * .707);
+        animation: animation-2--rotate-inverse 8s infinite;
+    }
+    .animation-2 div:nth-child(6) {
+        margin-left: calc(var(--base-size) * -1.414);
+    }
+
+
+    .animation-2 img {
+        top: 0;
+        left: 0;
+        position: absolute;
+        border-radius: 50%;
+        width: 100%;
+        transform: rotate(-45deg);
+        transform-origin: center;
+    }
+    .animation-2 div:nth-child(2) img {
+        transform: rotate(-135deg) rotateY(-180deg);
+    }
+    .animation-2 div:nth-child(3) img {
+        transform: rotate(-135deg) rotateY(-180deg);
+    }
+    .animation-2 div:nth-child(4) img {
+        transform: rotate(-45deg) rotateY(-180deg);
+    }
+    .animation-2 div:nth-child(5) img {
+        transform: rotate(-225deg) rotateY(-180deg);
+    }
+    .animation-2 div:nth-child(6) img {
+        transform: rotate(-315deg);
+    }
+
+
+    @keyframes animation-2--rotate {
+        0% {
+            transform: rotate(0);
+        }
+        13% {
+            transform: rotate(-90deg);
+        }
+        33% {
+            transform: rotate(-90deg);
+        }
+        46% {
+            transform: rotate(-270deg);
+        }
+        66% {
+            transform: rotate(-270deg);
+        }
+        79% {
+            transform: rotate(-360deg);
+        }
+        100% {
+            transform: rotate(-360deg);
+        }
+    }
+
+
+    @keyframes animation-2--rotate-inverse {
+        0% {
+            transform: rotate(0);
+        }
+        13% {
+            transform: rotate(180deg);
+        }
+        33% {
+            transform: rotate(180deg);
+        }
+        46% {
+            transform: rotate(270deg);
+        }
+        66% {
+            transform: rotate(270deg);
+        }
+        79% {
+            transform: rotate(360deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+
+    @keyframes animation-2--rotate-special {
+        0% {
+            transform: rotate(0);
+        }
+        13% {
+            transform: rotate(-90deg);
+        }
+        33% {
+            transform: rotate(-90deg);
+        }
+        46% {
+            transform: rotate(-315deg);
+        }
+        66% {
+            transform: rotate(-315deg);
+        }
+        79% {
+            transform: rotate(-360deg);
+        }
+        100% {
+            transform: rotate(-360deg);
+        }
+    }
+
+    @media (max-width: 768px) {
+
+        .tx-container {
+            margin-top: 28vh;
+        }
+
+        .animation-2 {
+            --base-size: 64vh;
+        }
+
+        .animation-2 div {
+            position: absolute;
+            top: 12vh;
+            left: 35vw;
+        }
+
+        .tx-hero .md-button {
+            padding-left: 30px;
+            padding-right: 30px;
+        }
     }
 
     /* [mobile portrait -]: Adjust headline */
@@ -214,9 +406,17 @@
 </script>
 
 <section class="tx-container">
+    <div class="animation-2">
+        <div><img src="images/bg2048.jpg"></div>
+        <div><img src="images/bg2048.jpg"></div>
+        <div><img src="images/bg2048.jpg"></div>
+        <div><img src="images/bg2048.jpg"></div>
+        <div><img src="images/bg2048.jpg"></div>
+        <div><img src="images/bg2048.jpg"></div>
+    </div>
+
     <div class="md-grid md-typeset tx-wrapper">
         <div class="tx-hero">
-            <!-- Hero content -->
             <div class="tx-hero__content">
                 <h1>Powerful Highload Architecture</h1>
                 <p>Horizontal microservices architecture for high volume orders processing.</p>
@@ -231,6 +431,7 @@
                         href="http://xquanto.com/"
                         title="xquanto.com"
                         class="md-button"
+                        target="_blank"
                 >
                     Let’s trade
                 </a>
