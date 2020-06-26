@@ -1,0 +1,1352 @@
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Horizontal microservices architecture for high volume orders processing">
+      
+      
+        <link rel="canonical" href="https://xquanto.github.io/docs/server/proxy/">
+      
+      
+        <meta name="author" content="xquanto organization">
+      
+      <link rel="shortcut icon" href="../../images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1, mkdocs-material-5.1.0">
+    
+    
+      
+        <title>Proxy to backend - xquanto docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.89dc9fe3.min.css">
+      
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ecd4686e.min.css">
+      
+      
+        
+        
+        <meta name="theme-color" content="">
+      
+    
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../../docs/theme/styles/extra.css">
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    <body dir="ltr" data-md-color-primary="black" data-md-color-accent="cyan">
+  
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#proxy-calls-to-app-backend" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href="https://xquanto.github.io/docs/" title="xquanto docs" class="md-header-nav__button md-logo" aria-label="xquanto docs">
+      
+  <img src="../../images/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z" /></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      
+        <div class="md-header-nav__ellipsis">
+          <span class="md-header-nav__topic md-ellipsis">
+            xquanto docs
+          </span>
+          <span class="md-header-nav__topic md-ellipsis">
+            
+              Proxy to backend
+            
+          </span>
+        </div>
+      
+    </div>
+    
+      <label class="md-header-nav__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z" /></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active">
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z" /></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" /></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" /></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header-nav__source">
+        
+<a href="https://github.com/xquanto/docs/" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    xquanto/docs
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+        
+      
+      
+        
+          
+
+  
+
+<nav class="md-tabs md-tabs--active" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  <li class="md-tabs__item">
+    
+      <a href="../.." class="md-tabs__link">
+        Home
+      </a>
+    
+  </li>
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../../getting_started/" class="md-tabs__link">
+          Getting Started
+        </a>
+      
+    </li>
+  
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../configuration/" class="md-tabs__link md-tabs__link--active">
+          Server
+        </a>
+      
+    </li>
+  
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../../libraries/client/" class="md-tabs__link">
+          Libraries
+        </a>
+      
+    </li>
+  
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../../faq/" class="md-tabs__link">
+          FAQ
+        </a>
+      
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="https://xquanto.github.io/docs/" title="xquanto docs" class="md-nav__button md-logo" aria-label="xquanto docs">
+      
+  <img src="../../images/logo.png" alt="logo">
+
+    </a>
+    xquanto docs
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/xquanto/docs/" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    xquanto/docs
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../.." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+    
+    <label class="md-nav__link" for="nav-2">
+      Getting Started
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" /></svg>
+      </span>
+    </label>
+    <nav class="md-nav" aria-label="Getting Started" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" /></svg>
+        </span>
+        Getting Started
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../getting_started/" title="What is Centrifugo" class="md-nav__link">
+      What is Centrifugo
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../install/" title="Installation" class="md-nav__link">
+      Installation
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../quick_start/" title="Quick start" class="md-nav__link">
+      Quick start
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../guide/" title="Integration Guide" class="md-nav__link">
+      Integration Guide
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" checked>
+    
+    <label class="md-nav__link" for="nav-3">
+      Server
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" /></svg>
+      </span>
+    </label>
+    <nav class="md-nav" aria-label="Server" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" /></svg>
+        </span>
+        Server
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../configuration/" title="Configuration" class="md-nav__link">
+      Configuration
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../channels/" title="Channels" class="md-nav__link">
+      Channels
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../authentication/" title="Authentication" class="md-nav__link">
+      Authentication
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../private_channels/" title="Private channels" class="md-nav__link">
+      Private channels
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../engines/" title="Engines" class="md-nav__link">
+      Engines
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../http_api/" title="Server HTTP API" class="md-nav__link">
+      Server HTTP API
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../grpc_api/" title="Server GRPC API" class="md-nav__link">
+      Server GRPC API
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../admin/" title="Admin web interface" class="md-nav__link">
+      Admin web interface
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Proxy to backend
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3,9H17V7H3V9M3,13H17V11H3V13M3,17H17V15H3V17M19,17H21V15H19V17M19,7V9H21V7H19M19,13H21V11H19V13Z" /></svg>
+        </span>
+      </label>
+    
+    <a href="./" title="Proxy to backend" class="md-nav__link md-nav__link--active">
+      Proxy to backend
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" /></svg>
+      </span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#proxy-request-structure" class="md-nav__link">
+    Proxy request structure
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#proxy-headers" class="md-nav__link">
+    Proxy headers
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#connect-proxy" class="md-nav__link">
+    connect proxy
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#refresh-proxy" class="md-nav__link">
+    refresh proxy
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rpc-proxy" class="md-nav__link">
+    rpc proxy
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#return-custom-error" class="md-nav__link">
+    Return custom error
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#return-custom-disconnect" class="md-nav__link">
+    Return custom disconnect
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../server_subs/" title="Server-side subscriptions" class="md-nav__link">
+      Server-side subscriptions
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../recover/" title="Message recovery" class="md-nav__link">
+      Message recovery
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../signals/" title="Signal handling" class="md-nav__link">
+      Signal handling
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../connection_expiration/" title="Connection expiration" class="md-nav__link">
+      Connection expiration
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3-14" type="checkbox" id="nav-3-14">
+    
+    <label class="md-nav__link" for="nav-3-14">
+      Transports
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" /></svg>
+      </span>
+    </label>
+    <nav class="md-nav" aria-label="Transports" data-md-level="2">
+      <label class="md-nav__title" for="nav-3-14">
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" /></svg>
+        </span>
+        Transports
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../transports/" title="Transports overview" class="md-nav__link">
+      Transports overview
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../transports/websocket/" title="Websocket" class="md-nav__link">
+      Websocket
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../transports/sockjs/" title="SockJS" class="md-nav__link">
+      SockJS
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3-15" type="checkbox" id="nav-3-15">
+    
+    <label class="md-nav__link" for="nav-3-15">
+      Deploy
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" /></svg>
+      </span>
+    </label>
+    <nav class="md-nav" aria-label="Deploy" data-md-level="2">
+      <label class="md-nav__title" for="nav-3-15">
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" /></svg>
+        </span>
+        Deploy
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../deploy/nginx/" title="Nginx configuration" class="md-nav__link">
+      Nginx configuration
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../deploy/monitoring/" title="Monitoring" class="md-nav__link">
+      Monitoring
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../deploy/tuning/" title="OS tuning" class="md-nav__link">
+      OS tuning
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../deploy/tls/" title="TLS" class="md-nav__link">
+      TLS
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../protobuf/" title="Protobuf protocol" class="md-nav__link">
+      Protobuf protocol
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3-17" type="checkbox" id="nav-3-17">
+    
+    <label class="md-nav__link" for="nav-3-17">
+      Misc
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" /></svg>
+      </span>
+    </label>
+    <nav class="md-nav" aria-label="Misc" data-md-level="2">
+      <label class="md-nav__title" for="nav-3-17">
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" /></svg>
+        </span>
+        Misc
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../misc/insecure_modes/" title="Insecure modes" class="md-nav__link">
+      Insecure modes
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../misc/benchmark/" title="Benchmarking server" class="md-nav__link">
+      Benchmarking server
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../misc/migrate/" title="Migrate from Centrifugo v1" class="md-nav__link">
+      Migrate from Centrifugo v1
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../protocol/" title="Client protocol" class="md-nav__link">
+      Client protocol
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      Libraries
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" /></svg>
+      </span>
+    </label>
+    <nav class="md-nav" aria-label="Libraries" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" /></svg>
+        </span>
+        Libraries
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../libraries/client/" title="Client libraries" class="md-nav__link">
+      Client libraries
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../libraries/api/" title="API libraries" class="md-nav__link">
+      API libraries
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
+    
+    <label class="md-nav__link" for="nav-5">
+      FAQ
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" /></svg>
+      </span>
+    </label>
+    <nav class="md-nav" aria-label="FAQ" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" /></svg>
+        </span>
+        FAQ
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../faq/" title="Frequently Asked Questions" class="md-nav__link">
+      Frequently Asked Questions
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" /></svg>
+      </span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#proxy-request-structure" class="md-nav__link">
+    Proxy request structure
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#proxy-headers" class="md-nav__link">
+    Proxy headers
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#connect-proxy" class="md-nav__link">
+    connect proxy
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#refresh-proxy" class="md-nav__link">
+    refresh proxy
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rpc-proxy" class="md-nav__link">
+    rpc proxy
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#return-custom-error" class="md-nav__link">
+    Return custom error
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#return-custom-disconnect" class="md-nav__link">
+    Return custom disconnect
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/centrifugal/documentation/edit/master/docs/server/proxy.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z" /></svg>
+                  </a>
+                
+                
+                  
+                
+                
+                <h1 id="proxy-calls-to-app-backend">Proxy calls to app backend<a class="headerlink" href="#proxy-calls-to-app-backend" title="Permanent link">&para;</a></h1>
+<p><strong>Starting from Centrifugo v2.3.0</strong> it's possible to proxy some client connection events over HTTP to application backend and react to them in a way you need. For example you can authenticate connection via request from Centrifugo to your app backend, refresh client sessions and answer to RPC calls sent by client over WebSocket or SockJS connections.</p>
+<h3 id="proxy-request-structure">Proxy request structure<a class="headerlink" href="#proxy-request-structure" title="Permanent link">&para;</a></h3>
+<p>All proxy calls are <strong>HTTP POST</strong> requests that will be sent from Centrifugo to configured endpoints with configured timeout. These requests will have some headers copied from original client request (see details below) and include JSON body which varies depending on call type (for example data sent by client in RPC call etc, see more details about JSON bodies below).</p>
+<h3 id="proxy-headers">Proxy headers<a class="headerlink" href="#proxy-headers" title="Permanent link">&para;</a></h3>
+<p>By default the following headers from original client request will be copied to proxied request:</p>
+<ul>
+<li><code>Origin</code> (Centrifugo &gt;= v2.3.1)</li>
+<li><code>User-Agent</code></li>
+<li><code>Cookie</code></li>
+<li><code>Authorization</code></li>
+<li><code>X-Real-Ip</code></li>
+<li><code>X-Forwarded-For</code></li>
+<li><code>X-Request-Id</code></li>
+</ul>
+<p>It's possible to add extra headers using <code>proxy_extra_http_headers</code> configuration option (available since v2.3.1). This is an array of strings in configuration file, ex:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+  <span class="err">...</span>
+  <span class="nt">&quot;proxy_extra_http_headers&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;X-B3-TraceId&quot;</span><span class="p">,</span> <span class="s2">&quot;X-B3-SpanId&quot;</span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Alternatively you can set extra headers via environment variable (space separated):</p>
+<div class="highlight"><pre><span></span><code>export CENTRIFUGO_PROXY_EXTRA_HTTP_HEADERS=&quot;X-B3-TraceId X-B3-SpanId&quot;
+./centrifugo
+</code></pre></div>
+
+<p>Since v2.5.1 Centrifugo also forces <code>Content-Type</code> header to be <code>application/json</code> in all proxy HTTP requests since it sends body in JSON format to application backend.</p>
+<h3 id="connect-proxy">connect proxy<a class="headerlink" href="#connect-proxy" title="Permanent link">&para;</a></h3>
+<p>With the following options in configuration file:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+  <span class="err">...</span>
+  <span class="nt">&quot;proxy_connect_endpoint&quot;</span><span class="p">:</span> <span class="s2">&quot;http://localhost:3000/centrifugo/connect&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;proxy_connect_timeout&quot;</span><span class="p">:</span>  <span class="mi">1</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>– connection requests <strong>without JWT set</strong> will be proxied to <code>proxy_connect_endpoint</code> URL endpoint. On your backend side you can authenticate incoming connection and return client credentials to Centrifugo in response to proxied request.</p>
+<p>This means you don't need to generate JWT token and pass it to client side and can rely on cookie while authenticating user. <strong>Centrifugo should work on same domain in this case so your site cookie could be passed to Centrifugo</strong>. This also means that <strong>every</strong> new connection from user will result in HTTP POST request to your application backend. While with JWT token you usually generate it once on application page reload, if client reconnects due to Centrifugo restart or internet connection loss it uses the same JWT it had before thus usually no additional requests generated during reconnect process (until JWT expired).</p>
+<p>Payload example that will be sent to app backend when client without token wants to establish connection with Centrifugo and <code>proxy_connect_endpoint</code> is set to non-empty URL string:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+  <span class="nt">&quot;client&quot;</span><span class="p">:</span><span class="s2">&quot;9336a229-2400-4ebc-8c50-0a643d22e8a0&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;transport&quot;</span><span class="p">:</span><span class="s2">&quot;websocket&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;protocol&quot;</span><span class="p">:</span> <span class="s2">&quot;json&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;encoding&quot;</span><span class="p">:</span><span class="s2">&quot;json&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Request fields:</p>
+<ul>
+<li><code>client</code> is a unique client ID generated by Centrifugo for each incoming connection</li>
+<li><code>transport</code> is transport name (<code>websocket</code> or <code>sockjs</code> at moment)</li>
+<li><code>protocol</code> is a protocol type used by client (<code>json</code> or <code>protobuf</code> at moment)</li>
+<li><code>encoding</code> is a protocol encoding type used (<code>json</code> or <code>binary</code> at moment)</li>
+</ul>
+<p>Response expected:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;result&quot;</span><span class="p">:</span> <span class="p">{</span><span class="nt">&quot;user&quot;</span><span class="p">:</span> <span class="s2">&quot;56&quot;</span><span class="p">}}</span>
+</code></pre></div>
+
+<p>Result fields you can set:</p>
+<ul>
+<li><code>user</code> (string) is user ID (calculated on app backend based on request cookie header for example). Return it as empty string for accepting unauthenticated request</li>
+<li><code>expire_at</code> (optional integer) is a timestamp when connection must be considered expired. If not set or set to <code>0</code> connection won't expire at all</li>
+<li><code>info</code> (optional JSON) is a connection info JSON</li>
+<li><code>b64info</code> (optional string) is a binary connection info encoded in base64 format, will be decoded to raw bytes on Centrifugo before using in messages</li>
+<li><code>data</code> (optional JSON) is a custom data to send to client in connect command response. Supported since v2.3.1</li>
+<li><code>b64data</code> (optional string) is a custom data to send to client in connect command response for binary connections, will be decoded to raw bytes on Centrifugo side before sending to client. Supported since v2.3.1</li>
+<li><code>channels</code> (optional array of strings) - allows to provide a list of server-side channels to subscribe connection to. See more details about <a href="../server_subs/">server-side subscriptions</a>. Supported since v2.4.0</li>
+</ul>
+<p><code>proxy_connect_timeout</code> (float, in seconds) config option controls timeout of HTTP POST request sent to app backend.</p>
+<p>Here is the simplest example of connect handler in Tornado Python framework (note that in real system you need to authenticate user on your backend side, here we just return <code>"56"</code> as user ID):</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">CentrifugoConnectHandler</span><span class="p">(</span><span class="n">tornado</span><span class="o">.</span><span class="n">web</span><span class="o">.</span><span class="n">RequestHandler</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">check_xsrf_cookie</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_header</span><span class="p">(</span><span class="s1">&#39;Content-Type&#39;</span><span class="p">,</span> <span class="s1">&#39;application/json; charset=&quot;utf-8&quot;&#39;</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span>
+            <span class="s1">&#39;result&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;user&#39;</span><span class="p">:</span> <span class="s1">&#39;56&#39;</span>
+            <span class="p">}</span>
+        <span class="p">})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">options</span><span class="o">.</span><span class="n">parse_command_line</span><span class="p">()</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">tornado</span><span class="o">.</span><span class="n">web</span><span class="o">.</span><span class="n">Application</span><span class="p">([</span>
+      <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;/centrifugo/connect&#39;</span><span class="p">,</span> <span class="n">CentrifugoConnectHandler</span><span class="p">),</span>
+    <span class="p">])</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="mi">3000</span><span class="p">)</span>
+    <span class="n">tornado</span><span class="o">.</span><span class="n">ioloop</span><span class="o">.</span><span class="n">IOLoop</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</code></pre></div>
+
+<p>This example should help you to implement similar HTTP handler in any language/framework you are using on backend side.</p>
+<h3 id="refresh-proxy">refresh proxy<a class="headerlink" href="#refresh-proxy" title="Permanent link">&para;</a></h3>
+<p>With the following options in configuration file:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+  <span class="err">...</span>
+  <span class="nt">&quot;proxy_refresh_endpoint&quot;</span><span class="p">:</span> <span class="s2">&quot;http://localhost:3000/centrifugo/refresh&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;proxy_refresh_timeout&quot;</span><span class="p">:</span>  <span class="mi">1</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>– Centrifugo will call <code>proxy_refresh_endpoint</code> when it's time to refresh connection. Centrifugo itself will ask your backend about connection validity instead of refresh workflow on client side.</p>
+<p>Payload sent to app backend in refresh request (when connection is going to expire):</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+  <span class="nt">&quot;client&quot;</span><span class="p">:</span><span class="s2">&quot;9336a229-2400-4ebc-8c50-0a643d22e8a0&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;transport&quot;</span><span class="p">:</span><span class="s2">&quot;websocket&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;protocol&quot;</span><span class="p">:</span> <span class="s2">&quot;json&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;encoding&quot;</span><span class="p">:</span><span class="s2">&quot;json&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;user&quot;</span><span class="p">:</span><span class="s2">&quot;56&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Request fields:</p>
+<ul>
+<li><code>client</code>, <code>transport</code>, <code>protocol</code>, <code>encoding</code> are the same as described for connect request payload</li>
+<li><code>user</code> is a connection user ID obtained during authentication process</li>
+</ul>
+<p>Response expected:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;result&quot;</span><span class="p">:</span> <span class="p">{</span><span class="nt">&quot;expire_at&quot;</span><span class="p">:</span> <span class="mi">1565436268</span><span class="p">}}</span>
+</code></pre></div>
+
+<p>Result fields:</p>
+<ul>
+<li><code>expired</code> (boolean) is a flag to mark connection as expired - client will be diconnected</li>
+<li><code>expire_at</code> (integer) is a next timestamp when connection must be considered expired</li>
+<li><code>info</code> (optional JSON) is a connection info JSON</li>
+<li><code>b64info</code> (optional string) is a binary connection info encoded in base64 format</li>
+</ul>
+<p><code>proxy_refresh_timeout</code> (float, in seconds) config option controls timeout of HTTP POST request sent to app backend.</p>
+<h3 id="rpc-proxy">rpc proxy<a class="headerlink" href="#rpc-proxy" title="Permanent link">&para;</a></h3>
+<p>With the following option in configuration file:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+  <span class="err">...</span>
+  <span class="nt">&quot;proxy_rpc_endpoint&quot;</span><span class="p">:</span> <span class="s2">&quot;http://localhost:3000/centrifugo/connect&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;proxy_rpc_timeout&quot;</span><span class="p">:</span>  <span class="mi">1</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>RPC calls over client connection will be proxied to <code>proxy_rpc_endpoint</code>. This allows developer to utilize WebSocket (or SockJS) connection in bidirectional way.</p>
+<p>Payload sent to app backend in RPC request:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+  <span class="nt">&quot;client&quot;</span><span class="p">:</span><span class="s2">&quot;9336a229-2400-4ebc-8c50-0a643d22e8a0&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;transport&quot;</span><span class="p">:</span><span class="s2">&quot;websocket&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;protocol&quot;</span><span class="p">:</span> <span class="s2">&quot;json&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;encoding&quot;</span><span class="p">:</span><span class="s2">&quot;json&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;user&quot;</span><span class="p">:</span><span class="s2">&quot;56&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;data&quot;</span><span class="p">:{</span><span class="nt">&quot;method&quot;</span><span class="p">:</span><span class="s2">&quot;getCurrentYear&quot;</span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Request fields:</p>
+<ul>
+<li><code>client</code>, <code>transport</code>, <code>protocol</code>, <code>encoding</code> are the same as described for connect request payload</li>
+<li><code>user</code> is a connection user ID obtained during authentication process</li>
+<li><code>data</code> is an RPC data sent by client</li>
+<li><code>b64data</code> will be set instead of <code>data</code> field for connections that use binary payload encoding</li>
+</ul>
+<p>Response expected:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;result&quot;</span><span class="p">:</span> <span class="p">{</span><span class="nt">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span><span class="nt">&quot;answer&quot;</span><span class="p">:</span> <span class="s2">&quot;2019&quot;</span><span class="p">}}}</span>
+</code></pre></div>
+
+<p>Result fields:</p>
+<ul>
+<li><code>data</code> (JSON) is and RPC response - any valid JSON is supported</li>
+<li><code>b64data</code> string can be set instead of <code>data</code> for binary response encoded in base64 format</li>
+</ul>
+<p><code>proxy_rpc_timeout</code> (float, in seconds) config option controls timeout of HTTP POST request sent to app backend.</p>
+<h3 id="return-custom-error">Return custom error<a class="headerlink" href="#return-custom-error" title="Permanent link">&para;</a></h3>
+<p>Application backend can return JSON object that contain an error to return it to client:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+  <span class="nt">&quot;error&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;code&quot;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span>
+    <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;custom error&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Application can use error codes &gt;= 1000, error codes in range 0-999 are reserved by Centrifugo internal protocol.</p>
+<p>This <strong>does not apply to response on refresh request</strong> as there is no sense in returning an error (will not reach client anyway). </p>
+<p><code>proxy_rpc_timeout</code> (float, in seconds) controls timeout of HTTP POST request sent to app backend.</p>
+<h3 id="return-custom-disconnect">Return custom disconnect<a class="headerlink" href="#return-custom-disconnect" title="Permanent link">&para;</a></h3>
+<p>Application backend can return JSON object that contain an custom disconnect object to disconnect client in custom way:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+  <span class="nt">&quot;disconnect&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;code&quot;</span><span class="p">:</span> <span class="mi">4000</span><span class="p">,</span>
+    <span class="nt">&quot;reconnect&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="nt">&quot;reason&quot;</span><span class="p">:</span> <span class="s2">&quot;custom disconnect&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Application can use numbers in range 4000-4999 for custom disconnect codes. Numbers below 4000 are reserved by Centrifugo internal protocol. Keep in mind that <strong>due to WebSocket protocol limitations and Centrifugo internal protocol needs you need to keep disconnect reason string no longer than 32 symbols</strong>.</p>
+<p>This <strong>does not apply to response on refresh request</strong> as there is no way to control disconnect at moment - client will always be disconnected with <code>expired</code> disconnect reason.</p>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+    
+    <div class="md-footer-nav">
+        <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
+            
+            <a href="../admin/" title="Admin web interface" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+                <div class="md-footer-nav__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" /></svg>
+                </div>
+                <div class="md-footer-nav__title">
+                    <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                        Admin web interface
+                    </div>
+                </div>
+            </a>
+            
+            
+            <a href="../server_subs/" title="Server-side subscriptions" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+                <div class="md-footer-nav__title">
+                    <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                        Server-side subscriptions
+                    </div>
+                </div>
+                <div class="md-footer-nav__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z" /></svg>
+                </div>
+            </a>
+            
+        </nav>
+    </div>
+    
+    <div class="md-footer-meta md-typeset">
+        <div class="md-footer-meta__inner md-grid">
+            <div class="md-footer-copyright">
+                
+                <div class="md-footer-copyright__highlight">
+                    Copyright &copy; 2020 xquanto
+                </div>
+                
+                <style>
+
+                    /* Preserve link color */
+                    .md-announce a,
+                    .md-announce a:focus,
+                    .md-announce a:hover {
+                        color: currentColor;
+                    }
+
+                    /* Don't wrap name of blog article */
+                    .md-announce strong {
+                        white-space: nowrap;
+                    }
+
+                    /* Twitter icon */
+                    .md-announce .twitter {
+                        margin-left: .2em;
+                        color: #00acee;
+                    }
+                </style>
+                <a href="https://www.buymeacoffee.com/FZambia">
+                    Accepting donations via <strong>Buy me a coffee</strong>!
+                </a>
+            </div>
+            
+        </div>
+    </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/vendor.36cbf620.min.js"></script>
+      <script src="../../assets/javascripts/bundle.00c583dd.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
+      
+      <script>
+        app = initialize({
+          base: "../..",
+          features: ["tabs"],
+          search: Object.assign({
+            worker: "../../assets/javascripts/worker/search.7f7c8775.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+      
+    
+  </body>
+</html>

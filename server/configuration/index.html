@@ -1,0 +1,1879 @@
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Horizontal microservices architecture for high volume orders processing">
+      
+      
+        <link rel="canonical" href="https://xquanto.github.io/docs/server/configuration/">
+      
+      
+        <meta name="author" content="xquanto organization">
+      
+      <link rel="shortcut icon" href="../../images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1, mkdocs-material-5.1.0">
+    
+    
+      
+        <title>Configuration - xquanto docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.89dc9fe3.min.css">
+      
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ecd4686e.min.css">
+      
+      
+        
+        
+        <meta name="theme-color" content="">
+      
+    
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../../docs/theme/styles/extra.css">
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    <body dir="ltr" data-md-color-primary="black" data-md-color-accent="cyan">
+  
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#configuration" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href="https://xquanto.github.io/docs/" title="xquanto docs" class="md-header-nav__button md-logo" aria-label="xquanto docs">
+      
+  <img src="../../images/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z" /></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      
+        <div class="md-header-nav__ellipsis">
+          <span class="md-header-nav__topic md-ellipsis">
+            xquanto docs
+          </span>
+          <span class="md-header-nav__topic md-ellipsis">
+            
+              Configuration
+            
+          </span>
+        </div>
+      
+    </div>
+    
+      <label class="md-header-nav__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z" /></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active">
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z" /></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" /></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" /></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header-nav__source">
+        
+<a href="https://github.com/xquanto/docs/" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    xquanto/docs
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+        
+      
+      
+        
+          
+
+  
+
+<nav class="md-tabs md-tabs--active" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  <li class="md-tabs__item">
+    
+      <a href="../.." class="md-tabs__link">
+        Home
+      </a>
+    
+  </li>
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../../getting_started/" class="md-tabs__link">
+          Getting Started
+        </a>
+      
+    </li>
+  
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="./" class="md-tabs__link md-tabs__link--active">
+          Server
+        </a>
+      
+    </li>
+  
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../../libraries/client/" class="md-tabs__link">
+          Libraries
+        </a>
+      
+    </li>
+  
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../../faq/" class="md-tabs__link">
+          FAQ
+        </a>
+      
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="https://xquanto.github.io/docs/" title="xquanto docs" class="md-nav__button md-logo" aria-label="xquanto docs">
+      
+  <img src="../../images/logo.png" alt="logo">
+
+    </a>
+    xquanto docs
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/xquanto/docs/" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    xquanto/docs
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../.." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+    
+    <label class="md-nav__link" for="nav-2">
+      Getting Started
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" /></svg>
+      </span>
+    </label>
+    <nav class="md-nav" aria-label="Getting Started" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" /></svg>
+        </span>
+        Getting Started
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../getting_started/" title="What is Centrifugo" class="md-nav__link">
+      What is Centrifugo
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../install/" title="Installation" class="md-nav__link">
+      Installation
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../quick_start/" title="Quick start" class="md-nav__link">
+      Quick start
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../guide/" title="Integration Guide" class="md-nav__link">
+      Integration Guide
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" checked>
+    
+    <label class="md-nav__link" for="nav-3">
+      Server
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" /></svg>
+      </span>
+    </label>
+    <nav class="md-nav" aria-label="Server" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" /></svg>
+        </span>
+        Server
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Configuration
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3,9H17V7H3V9M3,13H17V11H3V13M3,17H17V15H3V17M19,17H21V15H19V17M19,7V9H21V7H19M19,13H21V11H19V13Z" /></svg>
+        </span>
+      </label>
+    
+    <a href="./" title="Configuration" class="md-nav__link md-nav__link--active">
+      Configuration
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" /></svg>
+      </span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#getting-help" class="md-nav__link">
+    Getting help
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#config-file-formats" class="md-nav__link">
+    Config file formats
+  </a>
+  
+    <nav class="md-nav" aria-label="Config file formats">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#json-config-format" class="md-nav__link">
+    JSON config format
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#toml-config-format" class="md-nav__link">
+    TOML config format
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#yaml-config-format" class="md-nav__link">
+    YAML config format
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-command" class="md-nav__link">
+    version command
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#checkconfig-command" class="md-nav__link">
+    checkconfig command
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#genconfig-command" class="md-nav__link">
+    genconfig command
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gentoken-command" class="md-nav__link">
+    gentoken command
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#checktoken-command" class="md-nav__link">
+    checktoken command
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#important-options" class="md-nav__link">
+    Important options
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#channel-options" class="md-nav__link">
+    Channel options
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advanced-configuration" class="md-nav__link">
+    Advanced configuration
+  </a>
+  
+    <nav class="md-nav" aria-label="Advanced configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#client_channel_limit" class="md-nav__link">
+    client_channel_limit
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#channel_max_length" class="md-nav__link">
+    channel_max_length
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#client_user_connection_limit" class="md-nav__link">
+    client_user_connection_limit
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#client_request_max_size" class="md-nav__link">
+    client_request_max_size
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#client_queue_max_size" class="md-nav__link">
+    client_queue_max_size
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#client_anonymous" class="md-nav__link">
+    client_anonymous
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sockjs_heartbeat_delay" class="md-nav__link">
+    sockjs_heartbeat_delay
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#websocket_compression" class="md-nav__link">
+    websocket_compression
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gomaxprocs" class="md-nav__link">
+    gomaxprocs
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advanced-endpoint-configuration" class="md-nav__link">
+    Advanced endpoint configuration.
+  </a>
+  
+    <nav class="md-nav" aria-label="Advanced endpoint configuration.">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#default-endpoints" class="md-nav__link">
+    Default endpoints.
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#admin-endpoints" class="md-nav__link">
+    Admin endpoints.
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#debug-endpoints" class="md-nav__link">
+    Debug endpoints.
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#healthcheck-endpoint" class="md-nav__link">
+    Healthcheck endpoint
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#custom-internal-ports" class="md-nav__link">
+    Custom internal ports
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disable-default-endpoints" class="md-nav__link">
+    Disable default endpoints
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#customize-handler-endpoinds" class="md-nav__link">
+    Customize handler endpoinds
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../channels/" title="Channels" class="md-nav__link">
+      Channels
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../authentication/" title="Authentication" class="md-nav__link">
+      Authentication
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../private_channels/" title="Private channels" class="md-nav__link">
+      Private channels
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../engines/" title="Engines" class="md-nav__link">
+      Engines
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../http_api/" title="Server HTTP API" class="md-nav__link">
+      Server HTTP API
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../grpc_api/" title="Server GRPC API" class="md-nav__link">
+      Server GRPC API
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../admin/" title="Admin web interface" class="md-nav__link">
+      Admin web interface
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../proxy/" title="Proxy to backend" class="md-nav__link">
+      Proxy to backend
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../server_subs/" title="Server-side subscriptions" class="md-nav__link">
+      Server-side subscriptions
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../recover/" title="Message recovery" class="md-nav__link">
+      Message recovery
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../signals/" title="Signal handling" class="md-nav__link">
+      Signal handling
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../connection_expiration/" title="Connection expiration" class="md-nav__link">
+      Connection expiration
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3-14" type="checkbox" id="nav-3-14">
+    
+    <label class="md-nav__link" for="nav-3-14">
+      Transports
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" /></svg>
+      </span>
+    </label>
+    <nav class="md-nav" aria-label="Transports" data-md-level="2">
+      <label class="md-nav__title" for="nav-3-14">
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" /></svg>
+        </span>
+        Transports
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../transports/" title="Transports overview" class="md-nav__link">
+      Transports overview
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../transports/websocket/" title="Websocket" class="md-nav__link">
+      Websocket
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../transports/sockjs/" title="SockJS" class="md-nav__link">
+      SockJS
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3-15" type="checkbox" id="nav-3-15">
+    
+    <label class="md-nav__link" for="nav-3-15">
+      Deploy
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" /></svg>
+      </span>
+    </label>
+    <nav class="md-nav" aria-label="Deploy" data-md-level="2">
+      <label class="md-nav__title" for="nav-3-15">
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" /></svg>
+        </span>
+        Deploy
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../deploy/nginx/" title="Nginx configuration" class="md-nav__link">
+      Nginx configuration
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../deploy/monitoring/" title="Monitoring" class="md-nav__link">
+      Monitoring
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../deploy/tuning/" title="OS tuning" class="md-nav__link">
+      OS tuning
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../deploy/tls/" title="TLS" class="md-nav__link">
+      TLS
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../protobuf/" title="Protobuf protocol" class="md-nav__link">
+      Protobuf protocol
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3-17" type="checkbox" id="nav-3-17">
+    
+    <label class="md-nav__link" for="nav-3-17">
+      Misc
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" /></svg>
+      </span>
+    </label>
+    <nav class="md-nav" aria-label="Misc" data-md-level="2">
+      <label class="md-nav__title" for="nav-3-17">
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" /></svg>
+        </span>
+        Misc
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../misc/insecure_modes/" title="Insecure modes" class="md-nav__link">
+      Insecure modes
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../misc/benchmark/" title="Benchmarking server" class="md-nav__link">
+      Benchmarking server
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../misc/migrate/" title="Migrate from Centrifugo v1" class="md-nav__link">
+      Migrate from Centrifugo v1
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../protocol/" title="Client protocol" class="md-nav__link">
+      Client protocol
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      Libraries
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" /></svg>
+      </span>
+    </label>
+    <nav class="md-nav" aria-label="Libraries" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" /></svg>
+        </span>
+        Libraries
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../libraries/client/" title="Client libraries" class="md-nav__link">
+      Client libraries
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../libraries/api/" title="API libraries" class="md-nav__link">
+      API libraries
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
+    
+    <label class="md-nav__link" for="nav-5">
+      FAQ
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" /></svg>
+      </span>
+    </label>
+    <nav class="md-nav" aria-label="FAQ" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" /></svg>
+        </span>
+        FAQ
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../faq/" title="Frequently Asked Questions" class="md-nav__link">
+      Frequently Asked Questions
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" /></svg>
+      </span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#getting-help" class="md-nav__link">
+    Getting help
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#config-file-formats" class="md-nav__link">
+    Config file formats
+  </a>
+  
+    <nav class="md-nav" aria-label="Config file formats">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#json-config-format" class="md-nav__link">
+    JSON config format
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#toml-config-format" class="md-nav__link">
+    TOML config format
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#yaml-config-format" class="md-nav__link">
+    YAML config format
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-command" class="md-nav__link">
+    version command
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#checkconfig-command" class="md-nav__link">
+    checkconfig command
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#genconfig-command" class="md-nav__link">
+    genconfig command
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gentoken-command" class="md-nav__link">
+    gentoken command
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#checktoken-command" class="md-nav__link">
+    checktoken command
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#important-options" class="md-nav__link">
+    Important options
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#channel-options" class="md-nav__link">
+    Channel options
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advanced-configuration" class="md-nav__link">
+    Advanced configuration
+  </a>
+  
+    <nav class="md-nav" aria-label="Advanced configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#client_channel_limit" class="md-nav__link">
+    client_channel_limit
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#channel_max_length" class="md-nav__link">
+    channel_max_length
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#client_user_connection_limit" class="md-nav__link">
+    client_user_connection_limit
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#client_request_max_size" class="md-nav__link">
+    client_request_max_size
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#client_queue_max_size" class="md-nav__link">
+    client_queue_max_size
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#client_anonymous" class="md-nav__link">
+    client_anonymous
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sockjs_heartbeat_delay" class="md-nav__link">
+    sockjs_heartbeat_delay
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#websocket_compression" class="md-nav__link">
+    websocket_compression
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gomaxprocs" class="md-nav__link">
+    gomaxprocs
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advanced-endpoint-configuration" class="md-nav__link">
+    Advanced endpoint configuration.
+  </a>
+  
+    <nav class="md-nav" aria-label="Advanced endpoint configuration.">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#default-endpoints" class="md-nav__link">
+    Default endpoints.
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#admin-endpoints" class="md-nav__link">
+    Admin endpoints.
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#debug-endpoints" class="md-nav__link">
+    Debug endpoints.
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#healthcheck-endpoint" class="md-nav__link">
+    Healthcheck endpoint
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#custom-internal-ports" class="md-nav__link">
+    Custom internal ports
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disable-default-endpoints" class="md-nav__link">
+    Disable default endpoints
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#customize-handler-endpoinds" class="md-nav__link">
+    Customize handler endpoinds
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/centrifugal/documentation/edit/master/docs/server/configuration.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z" /></svg>
+                  </a>
+                
+                
+                  
+                
+                
+                <h1 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h1>
+<p>Here we will look at how Centrifugo can be configured.</p>
+<h2 id="getting-help">Getting help<a class="headerlink" href="#getting-help" title="Permanent link">&para;</a></h2>
+<p>First let's look at all available command-line options:</p>
+<div class="highlight"><pre><span></span><code>centrifugo -h
+</code></pre></div>
+
+<p>You should see something like this as output:</p>
+<div class="highlight"><pre><span></span><code>Centrifugo – scalable real-time messaging server in language-agnostic way
+
+Usage:
+   [flags]
+   [command]
+
+Available Commands:
+  checkconfig Check configuration file
+  checktoken  Check connection JWT
+  genconfig   Generate minimal configuration file to start with
+  gentoken    Generate sample connection JWT for user
+  help        Help about any command
+  version     Centrifugo version information
+
+Flags:
+  -a, --address string             interface address to listen on
+      --admin                      enable admin web interface
+      --admin_external             enable admin web interface on external port
+      --admin_insecure             use insecure admin mode – no auth required for admin socket
+      --api_insecure               use insecure API mode
+      --client_insecure            start in insecure client mode
+  -c, --config string              path to config file (default &quot;config.json&quot;)
+      --debug                      enable debug endpoints
+  -e, --engine string              engine to use: memory or redis (default &quot;memory&quot;)
+      --grpc_api                   enable GRPC API server
+      --grpc_api_port int          port to bind GRPC API server to (default 10000)
+      --grpc_api_tls               enable TLS for GRPC API server, requires an X509 certificate and a key file
+      --grpc_api_tls_cert string   path to an X509 certificate file for GRPC API server
+      --grpc_api_tls_disable       disable general TLS for GRPC API server
+      --grpc_api_tls_key string    path to an X509 certificate key for GRPC API server
+      --health                     enable health check endpoint
+  -h, --help                       help for this command
+      --internal_address string    custom interface address to listen on for internal endpoints
+      --internal_port string       custom port for internal endpoints
+      --log_file string            optional log file - if not specified logs go to STDOUT
+      --log_level string           set the log level: debug, info, error, fatal or none (default &quot;info&quot;)
+  -n, --name string                unique node name
+      --pid_file string            optional path to create PID file
+  -p, --port string                port to bind HTTP server to (default &quot;8000&quot;)
+      --prometheus                 enable Prometheus metrics endpoint
+      --redis_db int               Redis database (Redis engine)
+      --redis_host string          Redis host (Redis engine) (default &quot;127.0.0.1&quot;)
+      --redis_master_name string   name of Redis master Sentinel monitors (Redis engine)
+      --redis_password string      Redis auth password (Redis engine)
+      --redis_port string          Redis port (Redis engine) (default &quot;6379&quot;)
+      --redis_sentinels string     comma-separated list of Sentinel addresses (Redis engine)
+      --redis_tls                  enable Redis TLS connection
+      --redis_tls_skip_verify      disable Redis TLS host verification
+      --redis_url string           Redis connection URL in format redis://:password@hostname:port/db (Redis engine)
+      --tls                        enable TLS, requires an X509 certificate and a key file
+      --tls_cert string            path to an X509 certificate file
+      --tls_external               enable TLS only for external endpoints
+      --tls_key string             path to an X509 certificate key
+</code></pre></div>
+
+<p>Not all available Centrifugo options available to be set over command-line flags – here we can see only some frequently used.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>All command-line options of Centrifugo can be set via configuration file with the same name (without <code>--</code> prefix of course). Also all available options can be set over environment variables in format <code>CENTRIFUGO_&lt;OPTION_NAME&gt;</code>.</p>
+</div>
+<h2 id="config-file-formats">Config file formats<a class="headerlink" href="#config-file-formats" title="Permanent link">&para;</a></h2>
+<p>Centrifugo supports different configuration file formats. </p>
+<h3 id="json-config-format">JSON config format<a class="headerlink" href="#json-config-format" title="Permanent link">&para;</a></h3>
+<p>Centrifugo requires configuration file on start. As was mentioned earlier it must be a file with valid JSON.</p>
+<p>This is a minimal Centrifugo configuration file:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+  <span class="nt">&quot;v3_use_offset&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="nt">&quot;token_hmac_secret_key&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;YOUR-SECRET-STRING-HERE&gt;&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;api_key&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;YOUR-API-KEY-HERE&gt;&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>The only two fields required are <strong>token_hmac_secret_key</strong> and <strong>api_key</strong>. <code>token_hmac_secret_key</code> used to check JWT signature (more about JWT in <a href="../authentication/">authentication chapter</a>). API key used for Centrifugo API endpoint authorization, see more in <a href="../http_api/">chapter about server HTTP API</a>. Keep both values in secret and never reveal to clients.</p>
+<p>The option <code>v3_use_offset</code> turns on using latest client-server protocol <code>offset</code> field (will be used by default in Centrifugo v3 so better to use it from start).</p>
+<h3 id="toml-config-format">TOML config format<a class="headerlink" href="#toml-config-format" title="Permanent link">&para;</a></h3>
+<p>Centrifugo also supports TOML format for configuration file:</p>
+<div class="highlight"><pre><span></span><code>centrifugo --config=config.toml
+</code></pre></div>
+
+<p>Where <code>config.toml</code> contains:</p>
+<div class="highlight"><pre><span></span><code>v3_use_offset = true
+token_hmac_secret_key = &quot;&lt;YOUR-SECRET-STRING-HERE&gt;&quot;
+api_key = &quot;&lt;YOUR-API-KEY-HERE&gt;&quot;
+log_level = &quot;debug&quot;
+</code></pre></div>
+
+<p>I.e. the same configuration as JSON file above with one extra option to define logging level.</p>
+<h3 id="yaml-config-format">YAML config format<a class="headerlink" href="#yaml-config-format" title="Permanent link">&para;</a></h3>
+<p>And YAML config also supported. <code>config.yaml</code>:</p>
+<div class="highlight"><pre><span></span><code>v3_use_offset: true
+token_hmac_secret_key: &quot;&lt;YOUR-SECRET-STRING-HERE&gt;&quot;
+api_key: &quot;&lt;YOUR-API-KEY-HERE&gt;&quot;
+log_level: debug
+</code></pre></div>
+
+<p>With YAML remember to use spaces, not tabs when writing configuration file.</p>
+<h2 id="version-command">version command<a class="headerlink" href="#version-command" title="Permanent link">&para;</a></h2>
+<p>To show Centrifugo version and exit run:</p>
+<div class="highlight"><pre><span></span><code>centrifugo version
+</code></pre></div>
+
+<h2 id="checkconfig-command">checkconfig command<a class="headerlink" href="#checkconfig-command" title="Permanent link">&para;</a></h2>
+<p>Centrifugo has special command to check configuration file <code>checkconfig</code>:</p>
+<div class="highlight"><pre><span></span><code>centrifugo checkconfig --config<span class="o">=</span>config.json
+</code></pre></div>
+
+<p>If any errors found during validation – program will exit with error message and exit code 1.</p>
+<h2 id="genconfig-command">genconfig command<a class="headerlink" href="#genconfig-command" title="Permanent link">&para;</a></h2>
+<p>Another command is <code>genconfig</code>:</p>
+<div class="highlight"><pre><span></span><code>centrifugo genconfig -c config.json
+</code></pre></div>
+
+<p>It will automatically generate the minimal required configuration file.</p>
+<p>If any errors happen – program will exit with error message and exit code 1.</p>
+<h2 id="gentoken-command">gentoken command<a class="headerlink" href="#gentoken-command" title="Permanent link">&para;</a></h2>
+<p>Another command is <code>gentoken</code>:</p>
+<div class="highlight"><pre><span></span><code>centrifugo gentoken -c config.json -u 28282
+</code></pre></div>
+
+<p>It will automatically generate HMAC SHA-256 based token for user with ID <code>28282</code> (which expires in 1 week).</p>
+<p>You can change token TTL with <code>-t</code> flag (number of seconds):</p>
+<div class="highlight"><pre><span></span><code>centrifugo gentoken -c config.json -u 28282 -t 3600
+</code></pre></div>
+
+<p>This way generated token will be valid for 1 hour.</p>
+<p>If any errors happen – program will exit with error message and exit code 1.</p>
+<h2 id="checktoken-command">checktoken command<a class="headerlink" href="#checktoken-command" title="Permanent link">&para;</a></h2>
+<p>One more command is <code>checktoken</code>:</p>
+<div class="highlight"><pre><span></span><code>centrifugo checktoken -c config.json &lt;TOKEN&gt;
+</code></pre></div>
+
+<p>It will validate your connection JWT, so you can test it before using while developing application.</p>
+<p>If any errors happen or validation failed – program will exit with error message and exit code 1.</p>
+<h2 id="important-options">Important options<a class="headerlink" href="#important-options" title="Permanent link">&para;</a></h2>
+<p>Some of the most important options you can configure when running Centrifugo:</p>
+<ul>
+<li><code>address</code> – bind your Centrifugo to specific interface address (by default <code>""</code>)</li>
+<li><code>port</code> – port to bind Centrifugo to (by default <code>8000</code>)</li>
+<li><code>engine</code> – engine to use - <code>memory</code> or <code>redis</code> (by default <code>memory</code>). Read more about engines in <a href="engines">special chapter</a>.</li>
+</ul>
+<p>Note that some options can be set via command-line. Command-line options are more valuable when set than configuration file's options. See description of <a href="https://github.com/spf13/viper">viper</a> – to see more details about configuration options priority.</p>
+<h2 id="channel-options">Channel options<a class="headerlink" href="#channel-options" title="Permanent link">&para;</a></h2>
+<p>Let's look at options related to channels. Channel is an entity to which clients can subscribe to receive messages published into that channel. Channel is just a string (several symbols has special meaning in Centrifugo - see <a href="../channels/">special chapter</a> to find more information about channels). The following options will affect channel behaviour:</p>
+<ul>
+<li>
+<p><code>publish</code> (boolean, default <code>false</code>) – allow clients to publish messages into channels directly (from client side). Your application will never receive those messages. In idiomatic case all messages must be published to Centrifugo by your application backend using Centrifugo API. But this option can be useful when you want to build something without backend-side validation and saving into database. This option can also be useful for demos and prototyping real-time ideas. By default it's <code>false</code>.</p>
+</li>
+<li>
+<p><code>subscribe_to_publish</code> (boolean, default <code>false</code>) - when <code>publish</code> option enabled client can publish into channel without being subscribed to it. This option enables automatic check that client subscribed on channel before allowing client to publish into channel.</p>
+</li>
+<li>
+<p><code>anonymous</code> (boolean, default <code>false</code>) – this option enables anonymous access (with empty <code>sub</code> claim in connection token). In most situations your application works with authenticated users so every user has its own unique id. But if you provide real-time features for public access you may need unauthorized access to some channels. Turn on this option and use empty string as user ID.</p>
+</li>
+<li>
+<p><code>presence</code> (boolean, default <code>false</code>) – enable/disable presence information. Presence is an information about clients currently subscribed on channel. By default this option is off so no presence information will be available for channels.</p>
+</li>
+<li>
+<p><code>presence_disable_for_client</code> (boolean, default <code>false</code>, available since v2.2.3) – allows making presence calls available only for server side API. By default presence information is available for both client and server side APIs.</p>
+</li>
+<li>
+<p><code>join_leave</code> (boolean, default <code>false</code>) – enable/disable sending join(leave) messages when client subscribes on a channel (unsubscribes from channel).</p>
+</li>
+<li>
+<p><code>history_size</code> (integer, default <code>0</code>) – history size (amount of messages) for channels. As Centrifugo keeps all history messages in memory it's very important to limit maximum amount of messages in channel history to reasonable value. <code>history_size</code> defines maximum amount of messages that Centrifugo will keep for <strong>each</strong> channel in namespace during history lifetime (see below). By default history size is <code>0</code> - this means that channels will have no history messages at all.</p>
+</li>
+<li>
+<p><code>history_lifetime</code> (integer, default <code>0</code>) – interval in seconds how long to keep channel history messages. As all history is storing in memory it is also very important to get rid of old history data for unused (inactive for a long time) channels. By default history lifetime is <code>0</code> – this means that channels will have no history messages at all. <strong>So to turn on keeping history messages you should wisely configure both <code>history_size</code> and <code>history_lifetime</code> options</strong>.</p>
+</li>
+<li>
+<p><code>history_recover</code> (boolean, default <code>false</code>) – when enabled Centrifugo will try to recover missed publications while client was disconnected for some reason (bad internet connection for example). By default this feature is off. This option must be used in conjunction with reasonably configured message history for channel i.e. <code>history_size</code> and <code>history_lifetime</code> <strong>must be set</strong> (because Centrifugo uses channel history to recover messages). Also note that not all real-time events require this feature turned on so think wisely when you need this. When this option turned on your application should be designed in a way to tolerate duplicate messages coming from channel (currently Centrifugo returns recovered publications in order and without duplicates but this is implementation detail that can be theoretically changed in future). See more details about how recovery works in <a href="../recover/">special chapter</a>.</p>
+</li>
+<li>
+<p><code>history_disable_for_client</code> (boolean, default <code>false</code>, available since v2.2.3) – allows making history available only for server side API. By default <code>false</code> – i.e. history calls are available for both client and server side APIs. History recovery mechanism if enabled will continue to work for clients anyway even if <code>history_disable_for_client</code> is on.</p>
+</li>
+<li>
+<p><code>server_side</code> (boolean, default <code>false</code>, available since v2.4.0) – when enabled then all client-side subscription requests to channels in namespace will be rejected with <code>PermissionDenied</code> error.</p>
+</li>
+</ul>
+<p>Let's look how to set some of these options in config:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+    <span class="nt">&quot;v3_use_offset&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nt">&quot;token_hmac_secret_key&quot;</span><span class="p">:</span> <span class="s2">&quot;my-secret-key&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;api_key&quot;</span><span class="p">:</span> <span class="s2">&quot;secret-api-key&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;anonymous&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nt">&quot;publish&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nt">&quot;subscribe_to_publish&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nt">&quot;presence&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nt">&quot;join_leave&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nt">&quot;history_size&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="nt">&quot;history_lifetime&quot;</span><span class="p">:</span> <span class="mi">300</span><span class="p">,</span>
+    <span class="nt">&quot;history_recover&quot;</span><span class="p">:</span> <span class="kc">true</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>And the last channel specific option is <code>namespaces</code>. <code>namespaces</code> are optional and if set must be an array of namespace objects. Namespace allows to configure custom options for channels starting with namespace name. This provides a great control over channel behaviour.</p>
+<p>Namespace has a name and the same channel options (with same defaults) as described above.</p>
+<ul>
+<li><code>name</code> - unique namespace name (name must consist of letters, numbers, underscores or hyphens and be more than 2 symbols length i.e. satisfy regexp <code>^[-a-zA-Z0-9_]{2,}$</code>).</li>
+</ul>
+<p>If you want to use namespace options for channel - you must include namespace name into
+channel name with <code>:</code> as separator:</p>
+<p><code>public:messages</code></p>
+<p><code>gossips:messages</code></p>
+<p>Where <code>public</code> and <code>gossips</code> are namespace names from project <code>namespaces</code>.</p>
+<p>All things together here is an example of <code>config.json</code> which includes registered project with all options set and 2 additional namespaces in it:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+    <span class="nt">&quot;v3_use_offset&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nt">&quot;token_hmac_secret_key&quot;</span><span class="p">:</span> <span class="s2">&quot;very-long-secret-key&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;api_key&quot;</span><span class="p">:</span> <span class="s2">&quot;secret-api-key&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;anonymous&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nt">&quot;publish&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nt">&quot;presence&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nt">&quot;join_leave&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nt">&quot;history_size&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="nt">&quot;history_lifetime&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span>
+    <span class="nt">&quot;namespaces&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+          <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;public&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;publish&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+          <span class="nt">&quot;anonymous&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+          <span class="nt">&quot;history_size&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+          <span class="nt">&quot;history_lifetime&quot;</span><span class="p">:</span> <span class="mi">300</span><span class="p">,</span>
+          <span class="nt">&quot;history_recover&quot;</span><span class="p">:</span> <span class="kc">true</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+          <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;gossips&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;presence&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+          <span class="nt">&quot;join_leave&quot;</span><span class="p">:</span> <span class="kc">true</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Channel <code>news</code> will use globally defined channel options.</p>
+<p>Channel <code>public:news</code> will use <code>public</code> namespace's options.</p>
+<p>Channel <code>gossips:news</code> will use <code>gossips</code> namespace's options.</p>
+<p>There is no inheritance in channel options and namespaces – so if for example you defined <code>presence: true</code> on top level of configuration and then defined namespace – that namespace won't have presence enabled - you must enable it for namespace explicitly. </p>
+<h2 id="advanced-configuration">Advanced configuration<a class="headerlink" href="#advanced-configuration" title="Permanent link">&para;</a></h2>
+<p>Centrifugo has some options for which default values make sense for most applications. In many case you don't need (and you really should not) change them. This chapter is about such options.</p>
+<h3 id="client_channel_limit">client_channel_limit<a class="headerlink" href="#client_channel_limit" title="Permanent link">&para;</a></h3>
+<p>Default: 128</p>
+<p>Sets maximum number of different channel subscriptions single client can have.</p>
+<h3 id="channel_max_length">channel_max_length<a class="headerlink" href="#channel_max_length" title="Permanent link">&para;</a></h3>
+<p>Default: 255</p>
+<p>Sets maximum length of channel name.</p>
+<h3 id="client_user_connection_limit">client_user_connection_limit<a class="headerlink" href="#client_user_connection_limit" title="Permanent link">&para;</a></h3>
+<p>Default: 0</p>
+<p>Maximum number of connections from user (with known user ID) to Centrifugo node. By default - unlimited.</p>
+<h3 id="client_request_max_size">client_request_max_size<a class="headerlink" href="#client_request_max_size" title="Permanent link">&para;</a></h3>
+<p>Default: 65536</p>
+<p>Maximum allowed size of request from client in bytes.</p>
+<h3 id="client_queue_max_size">client_queue_max_size<a class="headerlink" href="#client_queue_max_size" title="Permanent link">&para;</a></h3>
+<p>Default: 10485760</p>
+<p>Maximum client message queue size in bytes to close slow reader connections. By default - 10mb.</p>
+<h3 id="client_anonymous">client_anonymous<a class="headerlink" href="#client_anonymous" title="Permanent link">&para;</a></h3>
+<p>Default: false</p>
+<p>Enable mode when all clients can connect to Centrifugo without JWT connection token. In this case all connections without token will be treated as anonymous (i.e. with empty user ID) and only can subscribe to channels with <code>anonymous</code> option enabled.</p>
+<h3 id="sockjs_heartbeat_delay">sockjs_heartbeat_delay<a class="headerlink" href="#sockjs_heartbeat_delay" title="Permanent link">&para;</a></h3>
+<p>Default: 25</p>
+<p>Interval in seconds how often to send SockJS h-frames to client.</p>
+<h3 id="websocket_compression">websocket_compression<a class="headerlink" href="#websocket_compression" title="Permanent link">&para;</a></h3>
+<p>Default: false</p>
+<p>Enable websocket compression, see chapter about websocket transport for more details.</p>
+<h3 id="gomaxprocs">gomaxprocs<a class="headerlink" href="#gomaxprocs" title="Permanent link">&para;</a></h3>
+<p>Default: 0</p>
+<p>By default Centrifugo runs on all available CPU cores. If you want to limit amount of cores Centrifugo can utilize in one moment use this option.</p>
+<h2 id="advanced-endpoint-configuration">Advanced endpoint configuration.<a class="headerlink" href="#advanced-endpoint-configuration" title="Permanent link">&para;</a></h2>
+<p>After you started Centrifugo you have several endpoints available. As soon as you have not provided any extra options you have 3 endpoints by default.</p>
+<h3 id="default-endpoints">Default endpoints.<a class="headerlink" href="#default-endpoints" title="Permanent link">&para;</a></h3>
+<p>The main endpoint is raw Websocket endpoint to serve client connections that use pure Websocket protocol:</p>
+<div class="highlight"><pre><span></span><code>ws://localhost:8000/connection/websocket
+</code></pre></div>
+
+<p>Then there is SockJS endpoint - it's needed to serve client connections that use SockJS library:</p>
+<div class="highlight"><pre><span></span><code>http://localhost:8000/connection/sockjs
+</code></pre></div>
+
+<p>And finally you have API endpoint to <code>publish</code> messages to channels (and execute other available API commands):</p>
+<div class="highlight"><pre><span></span><code>http://localhost:8000/api
+</code></pre></div>
+
+<p>By default all endpoints work on port <code>8000</code>. You can change it using <code>port</code> option:</p>
+<div class="highlight"><pre><span></span><code>{
+    &quot;port&quot;: 9000
+}
+</code></pre></div>
+
+<p>In production setup you will have your domain name in endpoint addresses above instead of <code>localhost</code>. Also if your Centrifugo will be behind proxy or load balancer software you most probably won't have ports in your endpoint addresses. What will always be the same as shown above are URL paths: <code>/connection/sockjs</code>, <code>/connection/websocket</code>, <code>/api</code>.</p>
+<p>Let's look at possibilities to tweak available endpoints.</p>
+<h3 id="admin-endpoints">Admin endpoints.<a class="headerlink" href="#admin-endpoints" title="Permanent link">&para;</a></h3>
+<p>First is enabling admin endpoints:</p>
+<div class="highlight"><pre><span></span><code>{
+    ...
+    &quot;admin&quot;: true,
+    &quot;admin_password&quot;: &quot;password&quot;,
+    &quot;admin_secret&quot;: &quot;secret&quot;
+}
+</code></pre></div>
+
+<p>This makes the following endpoint available: <a href="http://localhost:8000">http://localhost:8000</a></p>
+<p>At this address you will see admin web interface. You can log into it using <code>admin_password</code> value shown above.</p>
+<h3 id="debug-endpoints">Debug endpoints.<a class="headerlink" href="#debug-endpoints" title="Permanent link">&para;</a></h3>
+<p>Next, when Centrifugo started in debug mode some extra debug endpoints become available. To start in debug mode add <code>debug</code> option to config:</p>
+<div class="highlight"><pre><span></span><code>{
+    ...
+    &quot;debug&quot;: true
+}
+</code></pre></div>
+
+<p>And endpoint:</p>
+<div class="highlight"><pre><span></span><code>http://localhost:8000/debug/pprof/
+</code></pre></div>
+
+<p>– will show you useful info about internal state of Centrifugo instance. This info is especially helpful when troubleshooting. See <a href="https://github.com/centrifugal/centrifugo/wiki/Investigating-performance-issues">wiki page</a> for more info.</p>
+<h3 id="healthcheck-endpoint">Healthcheck endpoint<a class="headerlink" href="#healthcheck-endpoint" title="Permanent link">&para;</a></h3>
+<p>New in v2.1.0</p>
+<p>Use <code>health</code> boolean option (by default <code>false</code>) to enable healthcheck endpoint which will be available on path <code>/health</code>. Also available over command-line flag:</p>
+<div class="highlight"><pre><span></span><code>./centrifugo -c config.json --health
+</code></pre></div>
+
+<h3 id="custom-internal-ports">Custom internal ports<a class="headerlink" href="#custom-internal-ports" title="Permanent link">&para;</a></h3>
+<p>We strongly recommend to not expose API, admin, debug and prometheus endpoints to Internet. The following Centrifugo endpoints are considered internal:</p>
+<ul>
+<li>API endpoint (<code>/api</code>) - for HTTP API requests</li>
+<li>Admin web interface endpoints (<code>/</code>, <code>/admin/auth</code>, <code>/admin/api</code>) - used by web interface</li>
+<li>Prometheus endpoint (<code>/metrics</code>) - used for exposing server metrics in Prometheus format </li>
+<li>Healthcheck endpoint (<code>/health</code>) - used to do healthchecks</li>
+<li>Debug endpoints (<code>/debug/pprof</code>) - used to inspect internal server state</li>
+</ul>
+<p>It's a good practice to protect those endpoints with firewall. For example you can do this in <code>location</code> section of Nginx configuration.</p>
+<p>Though sometimes you don't have access to per-location configuration in your proxy/load balancer software. For example when using Amazon ELB. In this case you can change ports on which your internal endpoints work.</p>
+<p>To run internal endpoints on custom port use <code>internal_port</code> option:</p>
+<div class="highlight"><pre><span></span><code>{
+    ...
+    &quot;internal_port&quot;: 9000
+}
+</code></pre></div>
+
+<p>So admin web interface will work on address:</p>
+<div class="highlight"><pre><span></span><code>http://localhost:9000
+</code></pre></div>
+
+<p>Also debug page will be available on new custom port too:</p>
+<div class="highlight"><pre><span></span><code>http://localhost:9000/debug/pprof/
+</code></pre></div>
+
+<p>The same for API and prometheus endpoint.</p>
+<h3 id="disable-default-endpoints">Disable default endpoints<a class="headerlink" href="#disable-default-endpoints" title="Permanent link">&para;</a></h3>
+<p>These options available since v2.4.0</p>
+<p>To disable websocket endpoint set <code>websocket_disable</code> boolean option to <code>true</code>.</p>
+<p>To disable SockJS endpoint set <code>sockjs_disable</code> boolean option to <code>true</code>.</p>
+<p>To disable API endpoint set <code>api_disable</code> boolean option to <code>true</code>.</p>
+<h3 id="customize-handler-endpoinds">Customize handler endpoinds<a class="headerlink" href="#customize-handler-endpoinds" title="Permanent link">&para;</a></h3>
+<p>Starting from Centrifugo v2.2.5 it's possible to customize server HTTP handler endpoints. To do this Centrifugo supports several options:</p>
+<ul>
+<li><code>admin_handler_prefix</code> (default <code>""</code>) - to control Admin panel URL prefix</li>
+<li><code>websocket_handler_prefix</code> (default <code>"/connection/websocket"</code>) - to control WebSocket URL prefix</li>
+<li><code>sockjs_handler_prefix</code> (default <code>"/connection/sockjs"</code>) - to control SockJS URL prefix</li>
+<li><code>api_handler_prefix</code> (default <code>"/api"</code>) - to control HTTP API URL prefix</li>
+<li><code>prometheus_handler_prefix</code> (default <code>"/metrics"</code>) - to control Prometheus URL prefix</li>
+<li><code>health_handler_prefix</code> (default <code>"/health"</code>) - to control health check URL prefix</li>
+</ul>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+    
+    <div class="md-footer-nav">
+        <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
+            
+            <a href="../../guide/" title="Integration Guide" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+                <div class="md-footer-nav__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" /></svg>
+                </div>
+                <div class="md-footer-nav__title">
+                    <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                        Integration Guide
+                    </div>
+                </div>
+            </a>
+            
+            
+            <a href="../channels/" title="Channels" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+                <div class="md-footer-nav__title">
+                    <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                        Channels
+                    </div>
+                </div>
+                <div class="md-footer-nav__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z" /></svg>
+                </div>
+            </a>
+            
+        </nav>
+    </div>
+    
+    <div class="md-footer-meta md-typeset">
+        <div class="md-footer-meta__inner md-grid">
+            <div class="md-footer-copyright">
+                
+                <div class="md-footer-copyright__highlight">
+                    Copyright &copy; 2020 xquanto
+                </div>
+                
+                <style>
+
+                    /* Preserve link color */
+                    .md-announce a,
+                    .md-announce a:focus,
+                    .md-announce a:hover {
+                        color: currentColor;
+                    }
+
+                    /* Don't wrap name of blog article */
+                    .md-announce strong {
+                        white-space: nowrap;
+                    }
+
+                    /* Twitter icon */
+                    .md-announce .twitter {
+                        margin-left: .2em;
+                        color: #00acee;
+                    }
+                </style>
+                <a href="https://www.buymeacoffee.com/FZambia">
+                    Accepting donations via <strong>Buy me a coffee</strong>!
+                </a>
+            </div>
+            
+        </div>
+    </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/vendor.36cbf620.min.js"></script>
+      <script src="../../assets/javascripts/bundle.00c583dd.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
+      
+      <script>
+        app = initialize({
+          base: "../..",
+          features: ["tabs"],
+          search: Object.assign({
+            worker: "../../assets/javascripts/worker/search.7f7c8775.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+      
+    
+  </body>
+</html>
